@@ -8,6 +8,24 @@ interface Summary {
   summary: string;
 }
 
+function formatSummary(summary: string) {
+  const sections = {
+    overview: '',
+    insights: '',
+    conclusion: '',
+  };
+
+  const overviewMatch = summary.match(/A\. Overview:(.*?)(?=B\. Insights:|C\. Conclusion:|$)/s);
+  const insightsMatch = summary.match(/B\. Insights:(.*?)(?=C\. Conclusion:|$)/s);
+  const conclusionMatch = summary.match(/C\. Conclusion:(.*)$/s);
+
+  if (overviewMatch) sections.overview = overviewMatch[1].trim();
+  if (insightsMatch) sections.insights = insightsMatch[1].trim();
+  if (conclusionMatch) sections.conclusion = conclusionMatch[1].trim();
+
+  return sections;
+}
+
 export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [isLoadingAuth, setIsLoadingAuth] = useState<boolean>(true);
@@ -137,7 +155,7 @@ export default function App() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <FileText className="w-6 h-6 text-blue-600" />
-            <h1 className="text-xl font-semibold tracking-tight">DocuSum AI</h1>
+            <h1 className="text-xl font-semibold tracking-tight">AI-Summarizer</h1>
           </div>
           {isAuthenticated && (
             <button
@@ -250,8 +268,37 @@ export default function App() {
                               <span className="break-all">{item.fileName}</span>
                             </a>
                           </td>
-                          <td className="px-6 py-4 align-top text-gray-600 text-sm leading-relaxed">
-                            {item.summary}
+                          <td className="px-6 py-4 align-top text-gray-600 text-sm leading-relaxed">                            
+                          <td className="px-6 py-4 align-top text-gray-700 text-sm leading-relaxed">
+                            {(() => {
+                              const formatted = formatSummary(item.summary);
+
+                              return (
+                                <div className="space-y-4">
+                                  {formatted.overview && (
+                                    <div>
+                                      <p className="font-semibold text-gray-900">A. Overview:</p>
+                                      <p className="ml-4 whitespace-pre-line">{formatted.overview}</p>
+                                    </div>
+                                  )}
+
+                                  {formatted.insights && (
+                                    <div>
+                                      <p className="font-semibold text-gray-900">B. Insights:</p>
+                                      <p className="ml-4 whitespace-pre-line">{formatted.insights}</p>
+                                    </div>
+                                  )}
+
+                                  {formatted.conclusion && (
+                                    <div>
+                                      <p className="font-semibold text-gray-900">C. Conclusion:</p>
+                                      <p className="ml-4 whitespace-pre-line">{formatted.conclusion}</p>
+                                    </div>
+                                  )}
+                                </div>
+                              );
+                            })()}
+                          </td>
                           </td>
                         </tr>
                       ))}

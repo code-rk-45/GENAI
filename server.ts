@@ -2,8 +2,15 @@ import express from 'express';
 import { createServer as createViteServer } from 'vite';
 import { google } from 'googleapis';
 import { GoogleGenAI } from '@google/genai';
-import * as pdfParseModule from 'pdf-parse';
-const pdfParse = (pdfParseModule as any).default || pdfParseModule;
+// import * as pdfParseModule from 'pdf-parse';
+// const pdfParse = (pdfParseModule as any).default || pdfParseModule;
+// import { createRequire } from 'module';
+// const require = createRequire(import.meta.url);
+// const pdfParse = require('pdf-parse');
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+const pdfParse = require('pdf-parse');
+
 import mammoth from 'mammoth';
 import { stringify } from 'csv-stringify/sync';
 import dotenv from 'dotenv';
@@ -189,8 +196,28 @@ app.post('/api/process-folder', async (req, res) => {
           continue;
         }
 
-        // Summarize using Gemini
-        const prompt = `Summarize the following document in 5-10 sentences. Focus on the main points and key takeaways.\n\nDocument text:\n${text.substring(0, 30000)}`; // Limit text to avoid token limits
+        
+        const prompt = `
+        You are a professional document summarization system.
+
+        Provide a structured analytical summary using EXACTLY this format:
+
+        A. Overview:
+        - 2-3 concise bullet points summarizing the overall document.
+
+        B. Insights:
+        - 2-3 key insights in bullet form.
+
+        C. Conclusion:
+        - 1-2 bullet points summarizing the final takeaway.
+
+        Keep total length under 250 words.
+        Use professional, analytical tone.
+        Do NOT add any extra sections.
+
+        Document:
+        ${text.substring(0, 10000)}
+        `;
 
         const aiResponse = await ai.models.generateContent({
           model: 'gemini-3-flash-preview',

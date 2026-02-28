@@ -1,8 +1,75 @@
-# Run and deploy your AI Studio app
+# AI-Summarizer
 
-This contains everything you need to run your app locally.
+AI-powered Google Drive document summarization app built with:
 
-View DocuSum APP in AI Studio: https://ai.studio/apps/c65ecbb8-0e70-4872-8bc1-c503ab306e1d
+- React + Vite (Frontend)
+- Express (Backend)
+- Google Drive API (OAuth + File Access)
+- Gemini API (Document Summarization)
+- pdf-parse & mammoth (Text Extraction)
+
+---
+
+## 🚀 Features
+
+- Google Drive OAuth authentication
+- Process entire Drive folders
+- Extract text from:
+  - PDF
+  - DOCX
+  - TXT
+  - Google Docs
+- AI-powered structured summarization (Gemini)
+- CSV export of summaries
+- Clean Tailwind-based UI
+
+---
+
+## 📦 Prerequisites
+
+- Node.js v18+ (recommended v20)
+- npm or yarn
+- Google Cloud Project
+- Gemini API Key
+
+---
+
+## 🔐 Required API Setup
+
+### 1️⃣ Google OAuth Credentials
+
+1. Go to Google Cloud Console
+2. Create a project
+3. Enable:
+   - Google Drive API
+4. Create OAuth 2.0 Credentials
+5. Add redirect URL:
+http://localhost:3000/auth/callback
+
+
+Copy:
+- GOOGLE_CLIENT_ID
+- GOOGLE_CLIENT_SECRET
+
+---
+
+### 2️⃣ Gemini API Key
+
+1. Go to: https://ai.google.dev
+2. Create API Key
+3. Copy key
+
+---
+
+## ⚙️ Environment Variables
+
+Create a `.env` file in the root directory:
+
+```env
+APP_URL=http://localhost:3000
+GOOGLE_CLIENT_ID=your_google_client_id
+GOOGLE_CLIENT_SECRET=your_google_client_secret
+GEMINI_API_KEY=your_gemini_api_key
 
 ## Run Locally
 

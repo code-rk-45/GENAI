@@ -1,5 +1,5 @@
 {
-  "name": "DocuSum AI",
+  "name": "AI-Summarizer",
   "description": "Connect to Google Drive, extract text from documents (PDF, DOCX, TXT), and summarize them using AI.",
   "requestFramePermissions": []
 }
